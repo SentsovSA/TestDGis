@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TestDGis</string>
+    <string name="account">Account</string>
+    <string name="scale_plus">scale plus</string>
+    <string name="scale_minus">scale minus</string>
+    <string name="location">location</string>
+    <string name="nav_open">open</string>
+    <string name="nav_close">close\n</string>
+</resources>
