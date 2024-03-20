@@ -83,44 +83,45 @@ class MainActivity : ComponentActivity() {
         mapView = findViewById(R.id.mapView)
         lifecycle.addObserver(mapView)
 
+        val markers = mutableListOf<Marker>()
+        val icon = imageFromResource(sdkContext, R.drawable.marker)
+        val markerOptions = listOf(
+            MarkerOptions(
+                position = GeoPointWithElevation(latitude = 55.756651, longitude = 37.607473),
+                icon = icon,
+                iconWidth = LogicalPixel(47f),
+            ),
+            MarkerOptions(
+                position = GeoPointWithElevation(latitude = 55.719065, longitude = 37.600507),
+                icon = icon,
+                iconWidth = LogicalPixel(47f)
+            ),
+            MarkerOptions(
+                position = GeoPointWithElevation(latitude = 55.713026, longitude = 37.658892),
+                icon = icon,
+                iconWidth = LogicalPixel(47f)
+            ),
+            MarkerOptions(
+                position = GeoPointWithElevation(latitude = 55.759616, longitude = 37.641530),
+                icon = icon,
+                iconWidth = LogicalPixel(47f)
+            ),
+        )
+
+        markerOptions.forEach {
+            markers.add(Marker(it))
+        }
+
+        checkLocationPermission()
+        val locationSource = DefaultLocationSource(context = this)
+        registerPlatformLocationSource(sdkContext, locationSource)
+        val source = MyLocationMapObjectSource(
+            sdkContext,
+            MyLocationController(BearingSource.SATELLITE)
+        )
+
         mapView.getMapAsync { map ->
             val mapObjectManager = MapObjectManager(map)
-            val markers = mutableListOf<Marker>()
-            val icon = imageFromResource(sdkContext, R.drawable.marker)
-            val markerOptions = listOf(
-                MarkerOptions(
-                    position = GeoPointWithElevation(latitude = 55.756651, longitude = 37.607473),
-                    icon = icon,
-                    iconWidth = LogicalPixel(47f),
-                ),
-                MarkerOptions(
-                    position = GeoPointWithElevation(latitude = 55.719065, longitude = 37.600507),
-                    icon = icon,
-                    iconWidth = LogicalPixel(47f)
-                ),
-                MarkerOptions(
-                    position = GeoPointWithElevation(latitude = 55.713026, longitude = 37.658892),
-                    icon = icon,
-                    iconWidth = LogicalPixel(47f)
-                ),
-                MarkerOptions(
-                    position = GeoPointWithElevation(latitude = 55.759616, longitude = 37.641530),
-                    icon = icon,
-                    iconWidth = LogicalPixel(47f)
-                ),
-            )
-
-            checkLocationPermission()
-            val locationSource = DefaultLocationSource(context = this)
-            registerPlatformLocationSource(sdkContext, locationSource)
-            val source = MyLocationMapObjectSource(
-                sdkContext,
-                MyLocationController(BearingSource.SATELLITE)
-            )
-
-            markerOptions.forEach {
-                markers.add(Marker(it))
-            }
             map.addSource(source)
             mapObjectManager.addObjects(markers)
         }
